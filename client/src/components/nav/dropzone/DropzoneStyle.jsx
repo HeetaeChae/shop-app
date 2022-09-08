@@ -14,6 +14,9 @@ export const UploadZone = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 5px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const ImageZone = styled.div`
@@ -23,4 +26,7 @@ export const ImageZone = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;

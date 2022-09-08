@@ -15,11 +15,17 @@ function Dropimage() {
       .post("http://localhost:7000/api/product/image", formData)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data);
+          setImage([...image, res.data.fileName]);
         } else {
-          console.log(res.data);
+          alert("이미지 업로드 실패");
         }
       });
+  };
+
+  const deleteImg = (i) => {
+    let deletedImage = [...image];
+    deletedImage.splice(i, 1);
+    setImage(deletedImage);
   };
   return (
     <Container>
@@ -33,7 +39,18 @@ function Dropimage() {
           </section>
         )}
       </Dropzone>
-      <ImageZone></ImageZone>
+      <ImageZone>
+        <div style={{ display: "flex", overflow: "scroll" }}>
+          {image.map((img, index) => (
+            <img
+              key={index}
+              src={`http://localhost:7000/${img}`}
+              style={{ maxWidth: "13rem", height: "11rem" }}
+              onClick={() => deleteImg(index)}
+            />
+          ))}
+        </div>
+      </ImageZone>
     </Container>
   );
 }

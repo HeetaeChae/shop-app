@@ -2,14 +2,24 @@ import React, { useCallback, useState } from "react";
 import Navbar from "../../components/nav/Navbar";
 import { Main } from "./UploadStyle";
 import Dropimage from "../../components/nav/dropzone/Dropzone";
+import axios from "axios";
 
 import { Form, Input, Button, Select, InputNumber } from "antd";
 import "antd/dist/antd.css";
 const { TextArea } = Input;
 
-function Upload() {
+function Upload(props) {
   const onFinish = (e) => {
-    console.log(e);
+    const variables = e;
+    axios
+      .post("http://localhost:7000/api/product/upload", variables)
+      .then((res) => {
+        if (res.data.success) {
+          alert("업로드 성공");
+        } else {
+          alert("업로드에 실패했습니다.");
+        }
+      });
   };
 
   return (
