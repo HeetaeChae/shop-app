@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { Container, UploadZone, ImageZone } from "./DropzoneStyle";
 
-function Dropimage() {
+function Dropimage({ setProductImg }) {
   const [image, setImage] = useState([]);
 
   const onDrop = (files) => {
@@ -16,9 +16,11 @@ function Dropimage() {
       .then((res) => {
         if (res.data.success) {
           setImage([...image, res.data.fileName]);
+          setProductImg([...image, res.data.fileName]);
         } else {
           alert("이미지 업로드 실패");
         }
+        return image;
       });
   };
 
@@ -27,6 +29,7 @@ function Dropimage() {
     deletedImage.splice(i, 1);
     setImage(deletedImage);
   };
+
   return (
     <Container>
       <Dropzone onDrop={onDrop}>

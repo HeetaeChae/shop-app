@@ -6,8 +6,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: var(--main-width);
+  align-items: center;
 `;
 
 export const InputContainer = styled.div`
@@ -33,16 +34,32 @@ export const InputHistory = styled.div`
   margin-top: 1rem;
 `;
 
-export const ProductsContainer = styled.div`
+export const ProductList = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin: 2.5rem 0 1.5rem 0;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const ProductsTitle = styled.div`
-  font-size: var(--extra-large-size);
-  font-weight: 700;
+export const MoreButton = styled.button`
+  width: 7rem;
+  height: 3rem;
+  text-align: center;
+  background-color: var(--indigo-color);
+  color: var(--white-color);
+  border-radius: 0.5rem;
+  font-size: var(--large-size);
+  margin-top: 1.5rem;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    color: var(--yellow-color);
+  }
 `;
 
-export const ProductsFilter = styled.div``;
+export const Filter = styled.div`
+  margin-bottom: 3rem;
+  padding: 1rem 5rem 1rem 6rem;
+  background-color: var(--yellow-color);
+  border-radius: 1rem;
+`;

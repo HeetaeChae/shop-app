@@ -6,11 +6,15 @@ import axios from "axios";
 
 import { Form, Input, Button, Select, InputNumber } from "antd";
 import "antd/dist/antd.css";
+import Titlebar from "../../components/titlebar/Titlebar";
 const { TextArea } = Input;
 
 function Upload(props) {
+  const [productImg, setProductImg] = useState(null);
+
   const onFinish = (e) => {
-    const variables = e;
+    const variables = { ...e, productImg };
+    console.log(variables);
     axios
       .post("http://localhost:7000/api/product/upload", variables)
       .then((res) => {
@@ -41,6 +45,7 @@ function Upload(props) {
           autoComplete="off"
           style={{ width: "100%" }}
         >
+          <Titlebar text="상품 업로드" />
           <Form.Item
             label="상품명"
             name="title"
@@ -125,7 +130,7 @@ function Upload(props) {
           </Form.Item>
 
           <Form.Item label="이미지 업로드" name="image">
-            <Dropimage />
+            <Dropimage setProductImg={setProductImg} />
           </Form.Item>
 
           <Form.Item

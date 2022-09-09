@@ -7,7 +7,7 @@ export const Main = styled.main`
   align-items: center;
   padding: var(--main-width);
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 export const form = styled.div``;

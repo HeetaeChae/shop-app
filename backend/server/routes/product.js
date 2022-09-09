@@ -40,12 +40,15 @@ router.post("/upload", (req, res) => {
 });
 
 router.post("/products", (req, res) => {
-  Product.find().exec((err, doc) => {
-    if (err) {
-      return res.status(400).json({ success: false, err });
-    }
-    return res.status(200).json({ success: true, doc });
-  });
+  Product.find()
+    .skip(req.body.skip)
+    .limit(req.body.limit)
+    .exec((err, doc) => {
+      if (err) {
+        return res.status(400).json({ success: false, err });
+      }
+      return res.status(200).json({ success: true, doc, number: doc.length });
+    });
 });
 
 module.exports = router;
