@@ -40,15 +40,30 @@ router.post("/upload", (req, res) => {
 });
 
 router.post("/products", (req, res) => {
-  Product.find()
-    .skip(req.body.skip)
-    .limit(req.body.limit)
-    .exec((err, doc) => {
-      if (err) {
-        return res.status(400).json({ success: false, err });
-      }
-      return res.status(200).json({ success: true, doc, number: doc.length });
-    });
+  const skip = req.body.skip;
+  const limit = req.body.limit;
+  const search = req.body.search;
+
+  if (search) {
+    Product.find()
+      .find({ $text: { $search: search } })
+      .exec((err, doc) => {
+        if (err) {
+          return res.status(400).json({ search: false, err });
+        }
+        return res.status(200).json({ search: true, doc, number: doc.length });
+      });
+  } else if ((skip, limit)) {
+    Product.find()
+      .skip(skip)
+      .limit(limit)
+      .exec((err, doc) => {
+        if (err) {
+          return res.status(400).json({ render: false, err });
+        }
+        return res.status(200).json({ render: true, doc, number: doc.length });
+      });
+  }
 });
 
 module.exports = router;

@@ -18,57 +18,68 @@ const { Meta } = Card;
 function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [searchProducts, setSearchProducts] = useState([]);
 
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(8);
   const [productNumber, setProductNumber] = useState(null);
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleMore = () => {
-    // 처음엔 skip 0, limit 8
-    // 두번째엔 skip 8 limit 16
-    // 다음엔 skip = skip + 8, limit = limit + 8
-    getProducts();
-  };
-
-  const handleFilter = (filterd) => {};
-
-  const getProducts = () => {
-    //처음엔 skip과 limit을 그대로 보내준다.
-    //다음 부터 skip과 limit을 8씩 더 한 후 보내준다.
-    const body = {
-      skip,
-      limit,
-    };
+  const getProducts = (body) => {
     axios
       .post("http://localhost:7000/api/product/products", body)
       .then((res) => {
-        if (res.data.success) {
+        if (res.data.render) {
           setProducts([...products, ...res.data.doc]);
-          setSearchProducts([...searchProducts, ...res.data.doc]);
+          setProductNumber(res.data.number);
           setSkip(skip + 8);
           setLimit(limit + 8);
-          setProductNumber(res.data.number);
-        } else if (!res.data.success) {
-          alert("데이터를 불러오는데 실패했습니다!");
+        } else if (res.data.search) {
+          setProducts([...res.data.doc]);
+          console.log(res.data);
         }
       });
   };
 
   useEffect(() => {
-    getProducts();
+    const body = {
+      skip,
+      limit,
+    };
+    getProducts(body);
   }, []);
 
   useEffect(() => {
-    const searchProducts = products.filter((product) =>
-      product.title.includes(search)
-    );
-    setSearchProducts(searchProducts);
+    const body = {
+      search,
+    };
+    getProducts(body);
   }, [search]);
+
+  const handleMore = () => {
+    const body = {
+      skip,
+      limit,
+    };
+    getProducts(body);
+  };
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleFilter = (e) => {
+    const filteredCategorys = e;
+    if (filteredCategorys.length === 0) {
+      getProducts();
+    }
+    filteredCategorys.forEach((category) => {
+      const filteredProducts = products.filter(
+        (product) => product.category === category
+      );
+      setProducts(filteredProducts);
+    });
+  };
+
+  console.log(products);
 
   return (
     <div>
@@ -119,7 +130,7 @@ function Home() {
         </Filter>
         <ProductList>
           <Row>
-            {searchProducts.map((product) => (
+            {products.map((product) => (
               <Col lg={6} md={8} sm={12} xs={24} key={product._id}>
                 <Card
                   hoverable
