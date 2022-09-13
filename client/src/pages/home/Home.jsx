@@ -12,16 +12,22 @@ import {
   Filter,
 } from "./HomeStyle";
 import axios from "axios";
-import { Card, Row, Col, Checkbox } from "antd";
+import { Card, Row, Col, Checkbox, Collapse } from "antd";
+import { Link } from "react-router-dom";
+
 const { Meta } = Card;
+const { Panel } = Collapse;
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
 
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(8);
+  const limit = 8;
   const [productNumber, setProductNumber] = useState(null);
+
+  const [categoryArr, setCategoryArr] = useState([]);
 
   const getProducts = (body) => {
     axios
@@ -30,11 +36,10 @@ function Home() {
         if (res.data.render) {
           setProducts([...products, ...res.data.doc]);
           setProductNumber(res.data.number);
-          setSkip(skip + 8);
-          setLimit(limit + 8);
+          //8,16으로 받아야 되는데 이미 누적된 거에 8을 더해버림.
+          setSkip(skip + limit);
         } else if (res.data.search) {
           setProducts([...res.data.doc]);
-          console.log(res.data);
         }
       });
   };
@@ -66,18 +71,42 @@ function Home() {
     setSearch(e.target.value);
   };
 
-  const handleFilter = (e) => {
-    const filteredCategorys = e;
-    if (filteredCategorys.length === 0) {
-      getProducts();
+  useEffect(() => {
+    if (sort === "cheap") {
+      const sortedProducts = products.sort((a, b) => {
+        return a.price - b.price;
+      });
+      setProducts([...sortedProducts]);
+    } else if (sort === "expensive") {
+      const sortedProducts = products.sort((a, b) => {
+        return b.price - a.price;
+      });
+      setProducts([...sortedProducts]);
     }
-    filteredCategorys.forEach((category) => {
+  }, [sort]);
+
+  const categorys = ["의류", "전자기기", "가구", "잡화", "책"];
+
+  const handleCategory = (category) => {
+    const handleCategoryArr = [...categoryArr];
+    if (handleCategoryArr.indexOf(category) === -1) {
+      handleCategoryArr.push(category);
+      setCategoryArr([...handleCategoryArr]);
+    } else {
+      const index = handleCategoryArr.indexOf(category);
+      handleCategoryArr.splice(index, 1);
+      setCategoryArr([...handleCategoryArr]);
+    }
+  };
+
+  useEffect(() => {
+    categoryArr.forEach((category) => {
       const filteredProducts = products.filter(
         (product) => product.category === category
       );
       setProducts(filteredProducts);
     });
-  };
+  }, [categoryArr]);
 
   console.log(products);
 
@@ -101,59 +130,49 @@ function Home() {
             </span>
           </InputHistory>
         </InputContainer>
-        <Titlebar filter={true} text="상품 리스트" />
+        <Titlebar filter={true} text="상품 리스트" setSort={setSort} />
         <Filter>
-          <Checkbox.Group
-            style={{
-              width: "100%",
-            }}
-            onChange={handleFilter}
-          >
-            <Row>
-              <Col span={8}>
-                <Checkbox value="의류">의류</Checkbox>
-              </Col>
-              <Col span={8}>
-                <Checkbox value="전자기기">전자기기</Checkbox>
-              </Col>
-              <Col span={8}>
-                <Checkbox value="가구">가구</Checkbox>
-              </Col>
-              <Col span={8}>
-                <Checkbox value="잡화">잡화</Checkbox>
-              </Col>
-              <Col span={8}>
-                <Checkbox value="책">책</Checkbox>
-              </Col>
-            </Row>
-          </Checkbox.Group>
+          <Collapse>
+            <Panel header="카테고리로 정렬" style={{ width: "365.7px" }}>
+              {categorys.map((category) => (
+                <Checkbox
+                  key={category}
+                  onChange={() => handleCategory(category)}
+                >
+                  {category}
+                </Checkbox>
+              ))}
+            </Panel>
+          </Collapse>
         </Filter>
         <ProductList>
-          <Row>
+          <Row gutter={[16, 16]}>
             {products.map((product) => (
-              <Col lg={6} md={8} sm={12} xs={24} key={product._id}>
-                <Card
-                  hoverable
-                  style={{
-                    width: 240,
-                    marginBottom: "3.7rem",
-                    marginLeft: "2.5rem",
-                  }}
-                  cover={
-                    <img
-                      alt="example"
-                      src={`https://localhost.7000/${product.productImg}`}
-                      style={{ height: "10rem" }}
+              <Link to={`/detail/${product._id}`}>
+                <Col lg={6} md={8} sm={12} xs={24} key={product._id}>
+                  <Card
+                    hoverable
+                    style={{
+                      width: 240,
+                      marginBottom: "3.7rem",
+                      marginLeft: "2.5rem",
+                    }}
+                    cover={
+                      <img
+                        alt="example"
+                        src={`http://localhost:7000/${product.productImg[0]}`}
+                        style={{ height: "10rem" }}
+                      />
+                    }
+                    actions={[product.category, `${product.price} 원`]}
+                  >
+                    <Meta
+                      title={product.title}
+                      description={product.descriptionShort}
                     />
-                  }
-                  actions={[product.category, `${product.price} 원`]}
-                >
-                  <Meta
-                    title={product.title}
-                    description={product.descriptionShort}
-                  />
-                </Card>
-              </Col>
+                  </Card>
+                </Col>
+              </Link>
             ))}
           </Row>
         </ProductList>

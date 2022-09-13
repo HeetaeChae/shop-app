@@ -26,6 +26,8 @@ function Upload(props) {
       });
   };
 
+  console.log(productImg);
+
   return (
     <>
       <Navbar />

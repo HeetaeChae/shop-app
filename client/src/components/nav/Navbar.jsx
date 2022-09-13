@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <>
       <Nav>
-        <NavLink to="/">
+        <NavLink to="/" onClick={() => window.location.replace("/")}>
           <img src={require("../../images/logo.png")} alt="logo" />
         </NavLink>
         <Bars onClick={() => setIsToggle(!isToggle)} />

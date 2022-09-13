@@ -59,7 +59,4 @@ export const MoreButton = styled.button`
 
 export const Filter = styled.div`
   margin-bottom: 3rem;
-  padding: 1rem 5rem 1rem 6rem;
-  background-color: var(--yellow-color);
-  border-radius: 1rem;
 `;

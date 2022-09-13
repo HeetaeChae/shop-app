@@ -1,6 +1,5 @@
 import React from "react";
 import { Select } from "antd";
-import antd from "antd";
 import {
   TitlebarContainer,
   TitlebarFilter,
@@ -9,9 +8,9 @@ import {
 
 const { Option } = Select;
 
-function Titlebar({ filter, text }) {
-  const handleChange = (e) => {
-    console.log(e);
+function Titlebar({ filter, text, setSort }) {
+  const handleSort = (e) => {
+    setSort(e);
   };
 
   return (
@@ -20,14 +19,12 @@ function Titlebar({ filter, text }) {
       {filter ? (
         <TitlebarFilter>
           <Select
-            defaultValue="최신 순"
+            defaultValue="가격정렬"
             style={{
               width: 120,
             }}
-            onChange={handleChange}
+            onChange={handleSort}
           >
-            <Option value="latest">최신 순</Option>
-            <Option value="oldest">오래된 순</Option>
             <Option value="cheap">저렴한 순</Option>
             <Option value="expensive">비싼 순</Option>
           </Select>
