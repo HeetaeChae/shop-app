@@ -66,4 +66,14 @@ router.post("/products", (req, res) => {
   }
 });
 
+router.post("/detail", (req, res) => {
+  const id = req.body.id;
+  Product.find({ _id: id }).exec((err, doc) => {
+    if (err) {
+      return res.status(400).json({ success: false, err });
+    }
+    return res.status(200).json({ success: true, doc });
+  });
+});
+
 module.exports = router;
