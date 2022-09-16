@@ -1,4 +1,3 @@
-import antd from "antd";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -49,6 +48,7 @@ export const MoreButton = styled.button`
   border-radius: 0.5rem;
   font-size: var(--large-size);
   margin-top: 1.5rem;
+  margin-bottom: 3rem;
   &:hover {
     cursor: pointer;
   }

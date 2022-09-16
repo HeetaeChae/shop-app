@@ -22,68 +22,20 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-
-  const [skip, setSkip] = useState(0);
-  const limit = 8;
-  const [productNumber, setProductNumber] = useState(null);
-
   const [categoryArr, setCategoryArr] = useState([]);
 
   const getProducts = (body) => {
-    axios
-      .post("http://localhost:7000/api/product/products", body)
-      .then((res) => {
-        if (res.data.render) {
-          setProducts([...products, ...res.data.doc]);
-          setProductNumber(res.data.number);
-          //8,16으로 받아야 되는데 이미 누적된 거에 8을 더해버림.
-          setSkip(skip + limit);
-        } else if (res.data.search) {
-          setProducts([...res.data.doc]);
-        }
-      });
+    axios.post("http://localhost:7000/api/product/products").then((res) => {
+      setProducts([...res.data.doc]);
+      if (body.search) {
+        const { doc } = res.data;
+        const searchProducts = doc.filter((product) => {
+          return product.title.includes(body.search);
+        });
+        setProducts([...searchProducts]);
+      }
+    });
   };
-
-  useEffect(() => {
-    const body = {
-      skip,
-      limit,
-    };
-    getProducts(body);
-  }, []);
-
-  useEffect(() => {
-    const body = {
-      search,
-    };
-    getProducts(body);
-  }, [search]);
-
-  const handleMore = () => {
-    const body = {
-      skip,
-      limit,
-    };
-    getProducts(body);
-  };
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  useEffect(() => {
-    if (sort === "cheap") {
-      const sortedProducts = products.sort((a, b) => {
-        return a.price - b.price;
-      });
-      setProducts([...sortedProducts]);
-    } else if (sort === "expensive") {
-      const sortedProducts = products.sort((a, b) => {
-        return b.price - a.price;
-      });
-      setProducts([...sortedProducts]);
-    }
-  }, [sort]);
 
   const categorys = ["의류", "전자기기", "가구", "잡화", "책"];
 
@@ -98,6 +50,37 @@ function Home() {
       setCategoryArr([...handleCategoryArr]);
     }
   };
+
+  const handleMore = () => {};
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    const body = {
+      search,
+    };
+    getProducts(body);
+  }, [search]);
+
+  useEffect(() => {
+    if (sort === "cheap") {
+      const sortedProducts = products.sort((a, b) => {
+        return a.price - b.price;
+      });
+      setProducts([...sortedProducts]);
+    } else if (sort === "expensive") {
+      const sortedProducts = products.sort((a, b) => {
+        return b.price - a.price;
+      });
+      setProducts([...sortedProducts]);
+    }
+  }, [sort]);
 
   useEffect(() => {
     categoryArr.forEach((category) => {
@@ -148,8 +131,8 @@ function Home() {
         <ProductList>
           <Row gutter={[16, 16]}>
             {products.map((product) => (
-              <Link to={`/detail/${product._id}`}>
-                <Col lg={6} md={8} sm={12} xs={24} key={product._id}>
+              <Link to={`/detail/${product._id}`} key={product._id}>
+                <Col lg={6} md={8} sm={12} xs={24}>
                   <Card
                     hoverable
                     style={{
@@ -176,9 +159,7 @@ function Home() {
             ))}
           </Row>
         </ProductList>
-        {productNumber === 8 ? (
-          <MoreButton onClick={handleMore}>더 보기</MoreButton>
-        ) : null}
+        <MoreButton onClick={handleMore}>더 보기</MoreButton>
       </Container>
     </div>
   );
