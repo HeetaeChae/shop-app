@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const InputContainer = styled.div`
-  margin: 4rem 0 2rem 0;
+  margin-top: 8rem;
   text-align: center;
 `;
 

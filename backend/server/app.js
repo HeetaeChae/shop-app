@@ -9,9 +9,7 @@ const port = 7000;
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-mongoose.connect(
-  "mongodb+srv://chaeheetae:1234@cluster0.zfye0zk.mongodb.net/?retryWrites=true&w=majority"
-);
+mongoose.connect(MONGO_URI);
 
 if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));

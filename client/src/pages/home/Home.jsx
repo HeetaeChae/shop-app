@@ -26,13 +26,20 @@ function Home() {
 
   const getProducts = (body) => {
     axios.post("http://localhost:7000/api/product/products").then((res) => {
+      const { doc } = res.data;
       setProducts([...res.data.doc]);
       if (body.search) {
-        const { doc } = res.data;
         const searchProducts = doc.filter((product) => {
           return product.title.includes(body.search);
         });
         setProducts([...searchProducts]);
+      } else if (body.categoryArr) {
+        body.categoryArr.forEach((category) => {
+          const filteredProducts = doc.filter((product) => {
+            return product.category === category;
+          });
+          setProducts(filteredProducts);
+        });
       }
     });
   };
@@ -58,7 +65,11 @@ function Home() {
   };
 
   useEffect(() => {
-    getProducts();
+    //body로 startIdx
+    const body = {
+      startIdx: 0,
+    };
+    getProducts(body);
   }, []);
 
   useEffect(() => {
@@ -67,6 +78,13 @@ function Home() {
     };
     getProducts(body);
   }, [search]);
+
+  useEffect(() => {
+    const body = {
+      categoryArr,
+    };
+    getProducts(body);
+  }, [categoryArr]);
 
   useEffect(() => {
     if (sort === "cheap") {
@@ -81,15 +99,6 @@ function Home() {
       setProducts([...sortedProducts]);
     }
   }, [sort]);
-
-  useEffect(() => {
-    categoryArr.forEach((category) => {
-      const filteredProducts = products.filter(
-        (product) => product.category === category
-      );
-      setProducts(filteredProducts);
-    });
-  }, [categoryArr]);
 
   console.log(products);
 

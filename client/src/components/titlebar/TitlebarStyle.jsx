@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const TitlebarContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 2.5rem 0 1.5rem 0;
+  margin: 10em 0 1.5rem 0;
   width: 100%;
 `;
 

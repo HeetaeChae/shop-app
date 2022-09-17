@@ -9,7 +9,9 @@ export const Nav = styled.nav`
   align-items: center;
   height: 80px;
   padding: var(--main-width);
-
+  position: fixed;
+  width: 100%;
+  z-index: 10;
   img {
     width: 120px;
   }

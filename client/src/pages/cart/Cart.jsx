@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/nav/Navbar";
 import Titlebar from "../../components/titlebar/Titlebar";
+import Footer from "../../components/footer/Footer";
 import "./Cart.css";
 
 function Cart() {
@@ -186,6 +187,7 @@ function Cart() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

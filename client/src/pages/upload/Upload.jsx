@@ -1,150 +1,143 @@
-import React, { useCallback, useState } from "react";
-import Navbar from "../../components/nav/Navbar";
-import { Main } from "./UploadStyle";
-import Dropimage from "../../components/nav/dropzone/Dropzone";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-import { Form, Input, Button, Select, InputNumber } from "antd";
-import "antd/dist/antd.css";
+import Navbar from "../../components/nav/Navbar";
+import {
+  Main,
+  Form,
+  FormTitle,
+  ItemWrapper,
+  ItemLabel,
+  ItemText,
+  ItemNumber,
+  ItemSelect,
+  ItemTextarea,
+  ButtonWrapper,
+  Button,
+} from "./UploadStyle";
+import Dropimage from "../../components/nav/dropzone/Dropzone";
 import Titlebar from "../../components/titlebar/Titlebar";
-const { TextArea } = Input;
 
-function Upload(props) {
-  const [productImg, setProductImg] = useState(null);
+function Upload() {
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [descriptionShort, setDescriptionShort] = useState("");
+  const [descriptionLong, setDescriptionLong] = useState("");
+  const [productImg, setProductImg] = useState([]);
 
-  const onFinish = (e) => {
-    const variables = { ...e, productImg };
-    console.log(variables);
-    axios
-      .post("http://localhost:7000/api/product/upload", variables)
-      .then((res) => {
-        if (res.data.success) {
-          alert("업로드 성공");
-        } else {
-          alert("업로드에 실패했습니다.");
-        }
-      });
+  const onChangePrice = (e) => {
+    setPrice(e.target.value);
   };
 
-  console.log(productImg);
+  useEffect(() => {
+    price.toLocaleString();
+  }, [price]);
 
+  const onClickDelete = () => {
+    setTitle("");
+    setPrice(0);
+    setCategory("");
+    setDescriptionShort("");
+    setDescriptionLong("");
+    setProductImg([]);
+  };
+
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+    const body = {
+      title,
+      price,
+      category,
+      descriptionShort,
+      descriptionLong,
+      productImg,
+    };
+    axios.post("http://localhost:7000/api/product/upload", body).then((res) => {
+      if (res.data.success) {
+        console.log(res.data);
+      } else {
+        console.log(res.data);
+      }
+    });
+    setTitle("");
+    setPrice(0);
+    setCategory("");
+    setDescriptionShort("");
+    setDescriptionLong("");
+    setProductImg([]);
+  };
   return (
     <>
       <Navbar />
       <Main>
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          autoComplete="off"
-          style={{ width: "100%" }}
-        >
-          <Titlebar text="상품 업로드" />
-          <Form.Item
-            label="상품명"
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: "상품명을 입력해 주세요!",
-              },
-            ]}
-          >
-            <Input
-              style={{ width: "50%" }}
-              placeholder="상품명을 입력해 주세요."
-            />
-          </Form.Item>
-          <Form.Item
-            label="가격(₩)"
-            name="price"
-            rules={[
-              {
-                required: true,
-                message: "가격을 입력해 주세요!",
-              },
-            ]}
-          >
-            <InputNumber placeholder="원(₩)" />
-          </Form.Item>
-          <Form.Item
-            label="카테고리"
-            name="category"
-            rules={[
-              {
-                required: true,
-                message: "카테고리를 선택해주세요!",
-              },
-            ]}
-          >
-            <Select
-              style={{ width: "50%" }}
-              placeholder="카테고리를 선택해 주세요."
+        <Titlebar text="상품 업로드" />
+        <Form>
+          <FormTitle>상품을 업로드하세요.</FormTitle>
+          {/* input text 상품명 */}
+          <ItemWrapper>
+            <ItemLabel for="title">상품명</ItemLabel>
+            <ItemText
+              type="text"
+              name="title"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            ></ItemText>
+          </ItemWrapper>
+          {/* input number 가격 */}
+          <ItemWrapper>
+            <ItemLabel for="price">가격</ItemLabel>
+            <ItemNumber
+              type="number"
+              name="price"
+              onChange={(e) => onChangePrice(e)}
+              value={price}
+            ></ItemNumber>
+          </ItemWrapper>
+          {/* select option 카테고리 */}
+          <ItemWrapper>
+            <ItemLabel for="category">카테고리</ItemLabel>
+            <ItemSelect
+              name="category"
+              onChange={(e) => setCategory(e.target.value)}
+              value={category}
             >
-              <Select.Option value="의류">의류</Select.Option>
-              <Select.Option value="전자기기">전자기기</Select.Option>
-              <Select.Option value="가구">가구</Select.Option>
-              <Select.Option value="잡화">잡화</Select.Option>
-              <Select.Option value="책">책</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="상세설명"
-            name="descriptionShort"
-            rules={[
-              {
-                required: true,
-                message: "상품소개를 입력해주세요!",
-              },
-            ]}
-          >
-            <TextArea
-              style={{ width: "50%" }}
-              rows={1}
-              placeholder="상품소개를 요약하여 입력해주세요."
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="상세설명"
-            name="descriptionLong"
-            rules={[
-              {
-                required: true,
-                message: "상품소개를 입력해주세요!",
-              },
-            ]}
-          >
-            <TextArea
-              style={{ width: "50%" }}
-              rows={7}
-              placeholder="상품소개를 상세하게 입력해주세요."
-            />
-          </Form.Item>
-
-          <Form.Item label="이미지 업로드" name="image">
+              <option value="의류">의류</option>
+              <option value="전자기기">전자기기</option>
+              <option value="가구">가구</option>
+              <option value="잡화">잡화</option>
+              <option value="책">책</option>
+            </ItemSelect>
+          </ItemWrapper>
+          {/* input textArea 짧은 상세설명 */}
+          <ItemWrapper>
+            <ItemLabel for="descriptionShort">짧은 상세설명</ItemLabel>
+            <ItemTextarea
+              name="descriptionShort"
+              rows="1"
+              onChange={(e) => setDescriptionShort(e.target.value)}
+              value={descriptionShort}
+            ></ItemTextarea>
+          </ItemWrapper>
+          {/* input textArea 긴 상세설명 */}
+          <ItemWrapper>
+            <ItemLabel for="descriptionLong">긴 상세설명</ItemLabel>
+            <ItemTextarea
+              name="descriptionShort"
+              rows="10"
+              onChange={(e) => setDescriptionLong(e.target.value)}
+              value={descriptionLong}
+            ></ItemTextarea>
+          </ItemWrapper>
+          <ItemWrapper>
+            <ItemLabel for="image">이미지 업로드</ItemLabel>
             <Dropimage setProductImg={setProductImg} />
-          </Form.Item>
-
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              업로드
+          </ItemWrapper>
+          <ButtonWrapper>
+            <Button white onClick={onClickDelete}>
+              전체 삭제
             </Button>
-          </Form.Item>
+            <Button onClick={onSubmitForm}>상품 등록</Button>
+          </ButtonWrapper>
         </Form>
       </Main>
     </>

@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { FileImageOutlined } from "@ant-design/icons";
 import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import { Container, UploadZone, ImageZone } from "./DropzoneStyle";
+import { Container, UploadZone, ImageZone, Image } from "./DropzoneStyle";
 
 function Dropimage({ setProductImg }) {
   const [image, setImage] = useState([]);
@@ -30,6 +33,14 @@ function Dropimage({ setProductImg }) {
     setImage(deletedImage);
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
     <Container>
       <Dropzone onDrop={onDrop}>
@@ -37,21 +48,22 @@ function Dropimage({ setProductImg }) {
           <section>
             <UploadZone {...getRootProps()}>
               <input {...getInputProps()} />
-              <FileImageOutlined style={{ fontSize: "5rem" }} />
+              <FileImageOutlined style={{ fontSize: "15rem" }} />
             </UploadZone>
           </section>
         )}
       </Dropzone>
       <ImageZone>
-        <div style={{ display: "flex", overflow: "scroll" }}>
-          {image.map((img, index) => (
-            <img
-              key={index}
-              src={`http://localhost:7000/${img}`}
-              style={{ maxWidth: "13rem", height: "11rem" }}
-              onClick={() => deleteImg(index)}
-            />
-          ))}
+        <div>
+          <Slider {...settings}>
+            {image.map((img, index) => (
+              <Image
+                key={index}
+                src={`http://localhost:7000/${img}`}
+                onClick={() => deleteImg(index)}
+              />
+            ))}
+          </Slider>
         </div>
       </ImageZone>
     </Container>
