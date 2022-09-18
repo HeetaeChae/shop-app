@@ -19,8 +19,8 @@ function Footer() {
       </FooterLeft>
       <FooterMiddle>
         <FooterTitle>사용 기술</FooterTitle>
-        <FooterContent>front : React.js, styled-compoents</FooterContent>
-        <FooterContent>backend : Node.js, express</FooterContent>
+        <FooterContent>React.js, ReduxToolkit, styled-compoents</FooterContent>
+        <FooterContent>Node.js, express, MongoDB</FooterContent>
       </FooterMiddle>
       <FooterRight>
         <FooterTitle>링크</FooterTitle>
@@ -31,8 +31,12 @@ function Footer() {
             fontSize: "3rem",
           }}
         >
-          <GithubOutlined style={{ marginRight: "1rem" }} />
-          <DownSquareOutlined />
+          <a href="https://velog.io/@chaeheetae">
+            <GithubOutlined style={{ marginRight: "1rem" }} />
+          </a>
+          <a href="https://github.com/HeetaeChae">
+            <DownSquareOutlined />
+          </a>
         </div>
       </FooterRight>
     </FooterContainer>

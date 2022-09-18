@@ -16,6 +16,7 @@ import {
 } from "./UploadStyle";
 import Dropimage from "../../components/nav/dropzone/Dropzone";
 import Titlebar from "../../components/titlebar/Titlebar";
+import Footer from "../../components/footer/Footer";
 
 function Upload() {
   const [title, setTitle] = useState("");
@@ -140,6 +141,7 @@ function Upload() {
           </ButtonWrapper>
         </Form>
       </Main>
+      <Footer />
     </>
   );
 }

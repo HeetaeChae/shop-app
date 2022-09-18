@@ -6,8 +6,13 @@ export const FooterContainer = styled.div`
   background-color: var(--indigo-color);
   padding: 3rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const FooterLeft = styled.div`
@@ -16,6 +21,10 @@ export const FooterLeft = styled.div`
 
 export const FooterMiddle = styled.div`
   text-align: center;
+  margin: 0 5rem;
+  @media screen and (max-width: 768px) {
+    margin: 3rem 0;
+  }
 `;
 
 export const FooterRight = styled.div`

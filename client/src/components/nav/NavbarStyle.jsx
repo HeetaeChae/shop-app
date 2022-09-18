@@ -33,6 +33,7 @@ export const Bars = styled(FaBars)`
 `;
 
 export const NavMenu = styled.div`
+  position: relative;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -53,6 +54,9 @@ export const NavToggle = styled.nav`
   display: none;
 
   @media screen and (max-width: 768px) {
+    margin-top: 5rem;
+    width: 100%;
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,10 +76,26 @@ export const NavToggleLink = styled(Link)`
     color: var(--white-color);
     width: 100%;
     text-align: center;
-    
-    &:hover {
-      background-color: var(--yellow-color);
-      width: 95%;
-      border-radius: 10px;
-    }
+  }
+
+  &:hover {
+    background-color: var(--yellow-color);
+    width: 95%;
+    border-radius: 10px;
+  }
+`;
+
+export const CartNumber = styled.div`
+  position: absolute;
+  color: var(--white-color);
+  background-color: var(--yellow-color);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--large-size);
+  top: 2rem;
+  left: 15.5rem;
 `;

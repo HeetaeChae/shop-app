@@ -86,7 +86,7 @@ export const ButtonWrapper = styled.div`
   padding: 1.5rem 0;
   background-color: var(--indigo-color);
   width: 100%;
-  margin-top: 3rem;
+  margin: 3rem 0;
 
   @media screen and (max-width: 768px) {
     display: flex;

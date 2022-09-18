@@ -26,6 +26,7 @@ app.use(cors());
 app.use("/", express.static("./uploads"));
 
 app.use("/api/product", require("./routes/product"));
+app.use("/api/comment", require("./routes/comment"));
 
 app.get("/", (req, res) => {
   res.send("hello");

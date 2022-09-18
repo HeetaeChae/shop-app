@@ -1,5 +1,4 @@
-import antd from "antd";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   background: var(--white-color);
@@ -11,93 +10,92 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+export const DetailMain = styled.div`
+  width: 90%;
   height: 100%;
+  margin-top: 3rem;
+  background-color: var(--white-color);
+  margin-bottom: 5rem;
+`;
+
+export const DetailTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid var(--indigo-color);
+  border-bottom: 1px solid lightgray;
+  padding: 1rem 0;
+`;
+
+export const DetailImage = styled.div`
   margin: 3rem 0;
-  justify-content: center;
-  align-items: space-between;
-`;
-
-export const MainDivide = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
-export const MainTitle = styled.div`
-  margin-bottom: 3rem;
-  font-size: var(--extra-large-size);
-  color: var(--indigo-color);
-`;
-
-export const MainImage = styled.div`
+  width: 100%;
   background-color: black;
-  width: 40rem;
-  height: 40rem;
 `;
 
-export const MainDetail = styled.div`
+export const DetailContent = styled.div`
+  width: 100%;
+`;
+
+export const DetailButtons = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 5rem;
+  margin-bottom: 3rem;
 `;
 
-export const Divide = styled.div`
-  position: relative;
-  width: 400px;
-  height: 7rem;
-
-  &:after {
-    position: absolute;
-    content: "";
-    border-top: 2px solid lightgray;
-    bottom: 1rem;
-    left: 0;
-    right: 0;
-    height: 0.5em;
-  }
+export const DetailDescription = styled.div`
+  width: 100%;
+  border-top: 1.5px solid lightgray;
+  border-bottom: 1.5px solid lightgray;
+  padding: 1rem;
 `;
 
-export const Title = styled.div`
-  margin-bottom: 1.5rem;
-  font-size: var(--large-size);
-  color: gray;
-`;
-
-export const Content = styled.div`
+export const DetailButton = styled.button`
+  margin-right: 1rem;
+  width: 7rem;
+  height: 4rem;
+  background-color: var(--indigo-color);
+  color: var(--white-color);
+  border-radius: 3rem;
   font-size: var(--midium-size);
-`;
-
-export const Description = styled.div`
-  width: 75%;
-`;
-
-export const CartButton = styled.button`
-  margin-top: 5rem;
-  width: 10rem;
-  height: 5rem;
-  background-color: var(--yellow-color);
-  color: var(--main-color);
   border: none;
-  border-radius: 10px;
-  font-size: var(--large-size);
+  ${(props) =>
+    props.click &&
+    css`
+      background-color: var(--yellow-color);
+      margin-right: 0;
+      margin-left: 1rem;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(242, 203, 118);
+      }
+    `}
+`;
 
+export const DetailInput = styled.div`
+  width: 100%;
+  padding: 1rem;
+  background-color: rgb(220, 224, 232);
+  border-radius: 10px;
+  text-align: center;
+`;
+
+export const DetailComment = styled.div`
+  margin-top: 3rem;
+  border-top: 1px solid lightgray;
+  padding: 1rem 0;
+`;
+
+export const DetailInputButton = styled.button`
+  width: 11%;
+  height: 6.6rem;
+  border-radius: 10px;
+  border: 1px solid gray;
+  font-size: var(--large-size);
   &:hover {
     cursor: pointer;
-    color: var(--white-color);
-  }
-
-  &:active {
-    transform: translate(0.1rem, 0.1rem);
+    background-color: lightgray;
   }
 `;

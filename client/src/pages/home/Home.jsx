@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/nav/Navbar";
 import Titlebar from "../../components/titlebar/Titlebar";
+import Footer from "../../components/footer/Footer";
 import {
   Container,
   InputContainer,
@@ -170,6 +171,7 @@ function Home() {
         </ProductList>
         <MoreButton onClick={handleMore}>더 보기</MoreButton>
       </Container>
+      <Footer />
     </div>
   );
 }

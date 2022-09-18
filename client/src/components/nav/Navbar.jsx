@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Nav,
   NavLink,
@@ -6,9 +7,11 @@ import {
   NavMenu,
   NavToggle,
   NavToggleLink,
+  CartNumber,
 } from "./NavbarStyle";
 
 function Navbar() {
+  const cart = useSelector((state) => state.cart);
   const [isToggle, setIsToggle] = useState(false);
   return (
     <>
@@ -21,6 +24,7 @@ function Navbar() {
           <NavLink to="/">홈</NavLink>
           <NavLink to="/upload">업로드</NavLink>
           <NavLink to="/cart">장바구니</NavLink>
+          {cart.length > 0 ? <CartNumber>{cart.length}</CartNumber> : null}
         </NavMenu>
       </Nav>
       {isToggle ? (
