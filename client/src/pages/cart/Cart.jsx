@@ -4,40 +4,27 @@ import Titlebar from "../../components/titlebar/Titlebar";
 import Footer from "../../components/footer/Footer";
 import "./Cart.css";
 
-function Cart() {
-  const dummyDatas = [
-    {
-      _id: 1,
-      title: "첫 번째 상품",
-      image:
-        "https://www.ui4u.go.kr/depart/img/content/sub03/img_con03030100_01.jpg",
-      price: 58000,
-      quantity: 1,
-      checked: false,
-    },
-    {
-      _id: 2,
-      title: "두 번째 상품",
-      image:
-        "https://interbalance.org/wp-content/uploads/2021/08/flouffy-VBkIK3qj3QE-unsplash-scaled-e1631077364762.jpg",
-      price: 35000,
-      quantity: 1,
-      checked: false,
-    },
-    {
-      _id: 3,
-      title: "세 번째 상품",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFunsC41rpknsUqV5-rzazGLMyG3gzArw0jg&usqp=CAU",
-      price: 27000,
-      quantity: 1,
-      checked: false,
-    },
-  ];
+import { useSelector, useDispatch } from "react-redux";
+import { deleteReducer } from "../../redux/modules/cartSlice";
 
-  const [datas, setDatas] = useState([...dummyDatas]);
+function Cart() {
+  const [datas, setDatas] = useState([]);
   const [checkedDatas, setCheckedDatas] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const newCart = cart.map((product) => {
+      return {
+        ...product,
+        quantity: 1,
+        checked: false,
+      };
+    });
+    setDatas([...newCart]);
+  }, []);
 
   const onChangeQuantity = (e, id) => {
     //해당 data의 quantity를 바꿈.
@@ -72,7 +59,14 @@ function Cart() {
       return data._id !== id;
     });
     setDatas([...newDatas]);
+    //해당 data를 리듀서로 삭제함.
+    const data = datas.filter((data) => {
+      return data._id === id;
+    });
+    console.log(data[0]._id);
+    dispatch(deleteReducer(data[0]._id));
   };
+  console.log(cart);
 
   const onClickDeleteChecked = () => {
     //선택된 data들을 삭제함.
@@ -139,7 +133,10 @@ function Cart() {
                 </td>
                 <td>{data.title}</td>
                 <td>
-                  <img src={data.image} alt={data.title} />
+                  <img
+                    src={`http://localhost:7000/${data.productImg[0]}`}
+                    alt={data.title}
+                  />
                 </td>
                 <td>{data.price}</td>
                 <td>

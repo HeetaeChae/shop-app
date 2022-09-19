@@ -6,6 +6,7 @@
   height: 100%;
   padding: var(--main-width);
   align-items: center;
+  min-height: 80vh;
 }
 
 .table {
@@ -46,7 +47,7 @@
 .table tbody td img {
   width: 4rem;
   height: 4rem;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .table tbody td .table__tbody--checkbox {

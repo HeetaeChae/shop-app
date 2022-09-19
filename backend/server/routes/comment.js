@@ -19,6 +19,8 @@ router.post("/regComment", (req, res) => {
 });
 
 router.post("/getComments", (req, res) => {
+  const obj = JSON.stringify({ id: req.body.id });
+  console.log(obj);
   Comment.find().exec((err, doc) => {
     if (err) {
       return res.status(400).json({ success: false, err });

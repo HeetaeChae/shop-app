@@ -78,14 +78,16 @@ export const DetailInput = styled.div`
   width: 100%;
   padding: 1rem;
   background-color: rgb(220, 224, 232);
+  border: 1px solid lightgray;
   border-radius: 10px;
   text-align: center;
 `;
 
-export const DetailComment = styled.div`
+export const DetailComments = styled.div`
   margin-top: 3rem;
   border-top: 1px solid lightgray;
   padding: 1rem 0;
+  width: 100%;
 `;
 
 export const DetailInputButton = styled.button`
@@ -98,4 +100,21 @@ export const DetailInputButton = styled.button`
     cursor: pointer;
     background-color: lightgray;
   }
+`;
+
+export const DetailCommentsTitle = styled.div`
+  width: 100%;
+  padding: 1rem;
+  background-color: rgb(220, 224, 232);
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  font-size: var(--large-size);
+`;
+
+export const DetailComment = styled.div`
+  border-bottom: 1px solid lightgray;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
