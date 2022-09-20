@@ -24,26 +24,8 @@ function Home() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [categoryArr, setCategoryArr] = useState([]);
-
-  const getProducts = (body) => {
-    axios.post("http://localhost:7000/api/product/products").then((res) => {
-      const { doc } = res.data;
-      setProducts([...res.data.doc]);
-      if (body.search) {
-        const searchProducts = doc.filter((product) => {
-          return product.title.includes(body.search);
-        });
-        setProducts([...searchProducts]);
-      } else if (body.categoryArr) {
-        body.categoryArr.forEach((category) => {
-          const filteredProducts = doc.filter((product) => {
-            return product.category === category;
-          });
-          setProducts(filteredProducts);
-        });
-      }
-    });
-  };
+  const [skip, setSkip] = useState(0);
+  const [moreNumber, setMoreNumber] = useState(0);
 
   const categorys = ["의류", "전자기기", "가구", "잡화", "책"];
 
@@ -59,34 +41,67 @@ function Home() {
     }
   };
 
-  const handleMore = () => {};
-
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
+  const skipProducts = (body) => {
+    axios
+      .post("http://localhost:7000/api/product/skipProducts", body)
+      .then((res) => {
+        const { doc } = res.data;
+        setProducts([...products, ...doc]);
+        setSkip(skip + 8);
+        setMoreNumber(res.data.docNumber);
+      });
+  };
+
+  const allProducts = (body) => {
+    axios.post("http://localhost:7000/api/product/allProducts").then((res) => {
+      const { doc } = res.data;
+      if (body.search) {
+        const searchProducts = doc.filter((product) => {
+          return product.title.includes(body.search);
+        });
+        setProducts([...searchProducts]);
+        console.log(body.search);
+      } else if (body.categoryArr) {
+        body.categoryArr.forEach((category) => {
+          const categoryProducts = doc.filter((product) => {
+            return product.category === category;
+          });
+          setProducts([...categoryProducts]);
+        });
+      }
+    });
+  };
+  console.log(products);
+
+  //처음 렌더링
   useEffect(() => {
-    //body로 startIdx
-    const body = {
-      startIdx: 0,
-    };
-    getProducts(body);
+    const body = { skip };
+    skipProducts(body);
   }, []);
 
+  //더보기로 다음 상품 렌더링
+  const handleMore = () => {
+    const body = { skip };
+    skipProducts(body);
+  };
+
+  //상품들 검색(serach)
   useEffect(() => {
-    const body = {
-      search,
-    };
-    getProducts(body);
+    const body = { search };
+    allProducts(body);
   }, [search]);
 
+  //상품들 카테고리로 필터(category)
   useEffect(() => {
-    const body = {
-      categoryArr,
-    };
-    getProducts(body);
+    const body = { categoryArr };
+    allProducts(body);
   }, [categoryArr]);
 
+  //상품들 가격순으로 정렬
   useEffect(() => {
     if (sort === "cheap") {
       const sortedProducts = products.sort((a, b) => {
@@ -100,8 +115,6 @@ function Home() {
       setProducts([...sortedProducts]);
     }
   }, [sort]);
-
-  console.log(products);
 
   return (
     <div>
@@ -157,7 +170,10 @@ function Home() {
                         style={{ height: "10rem" }}
                       />
                     }
-                    actions={[product.category, `${product.price} 원`]}
+                    actions={[
+                      product.category,
+                      `${product.price.toLocaleString("ko-KR")} 원`,
+                    ]}
                   >
                     <Meta
                       title={product.title}
@@ -169,7 +185,9 @@ function Home() {
             ))}
           </Row>
         </ProductList>
-        <MoreButton onClick={handleMore}>더 보기</MoreButton>
+        {moreNumber === 8 ? (
+          <MoreButton onClick={handleMore}>더 보기</MoreButton>
+        ) : null}
       </Container>
       <Footer />
     </div>

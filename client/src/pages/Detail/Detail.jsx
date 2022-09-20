@@ -4,6 +4,7 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import moment from "moment";
 
 import Navbar from "../../components/nav/Navbar";
 import Titlebar from "../../components/titlebar/Titlebar";
@@ -30,6 +31,8 @@ import {
 } from "./DetailStyle";
 
 function Detail() {
+  var date = moment().format("YYYY-MM-DD HH:mm:ss");
+
   const { id } = useParams();
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -52,6 +55,7 @@ function Detail() {
       .then((res) => {
         if (res.data.success) {
           setComments([...res.data.doc]);
+          console.log(res.data.doc);
         } else {
           alert("댓글 데이터를 가져오는데에 실패했습니다.");
         }
@@ -74,6 +78,7 @@ function Detail() {
     const body = {
       productId: detail._id,
       comment: input,
+      createdAt: date,
     };
     axios
       .post("http://localhost:7000/api/comment/regComment", body)
@@ -117,7 +122,7 @@ function Detail() {
                   color: "gray",
                 }}
               >
-                {detail.createdAt.slice(0, 10)}
+                {detail.createdAt}
               </div>
             </DetailTitle>
             <DetailImage>
@@ -136,7 +141,9 @@ function Detail() {
               <DetailButtons>
                 <div>
                   <DetailButton>{detail.category}</DetailButton>
-                  <DetailButton>7일 전</DetailButton>
+                  <DetailButton>
+                    {detail.price.toLocaleString("ko-KR")} 원
+                  </DetailButton>
                 </div>
                 <div>
                   <DetailButton click>좋아요</DetailButton>

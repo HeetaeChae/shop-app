@@ -66,6 +66,9 @@ function Dropimage({ setProductImg }) {
           </Slider>
         </div>
       </ImageZone>
+      <div style={{ color: "red", marginTop: "3px" }}>
+        * 이미지를 클릭하여 삭제할 수 있습니다.
+      </div>
     </Container>
   );
 }

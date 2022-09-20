@@ -39,7 +39,22 @@ router.post("/upload", (req, res) => {
   });
 });
 
-router.post("/products", (req, res) => {
+router.post("/skipProducts", (req, res) => {
+  const { skip } = req.body;
+  Product.find()
+    .skip(skip)
+    .limit(8)
+    .exec((err, doc) => {
+      if (err) {
+        return res.status(400).json({ success: false, err });
+      }
+      return res
+        .status(200)
+        .json({ success: true, doc, docNumber: doc.length });
+    });
+});
+
+router.post("/allProducts", (req, res) => {
   Product.find().exec((err, doc) => {
     if (err) {
       return res.status(400).json({ success: false, err });

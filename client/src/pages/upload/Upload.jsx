@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
 import Navbar from "../../components/nav/Navbar";
 import {
   Main,
@@ -19,20 +20,14 @@ import Titlebar from "../../components/titlebar/Titlebar";
 import Footer from "../../components/footer/Footer";
 
 function Upload() {
+  var date = moment().format("YYYY-MM-DD HH:mm:ss");
+
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [descriptionShort, setDescriptionShort] = useState("");
   const [descriptionLong, setDescriptionLong] = useState("");
   const [productImg, setProductImg] = useState([]);
-
-  const onChangePrice = (e) => {
-    setPrice(e.target.value);
-  };
-
-  useEffect(() => {
-    price.toLocaleString();
-  }, [price]);
 
   const onClickDelete = () => {
     setTitle("");
@@ -52,6 +47,7 @@ function Upload() {
       descriptionShort,
       descriptionLong,
       productImg,
+      createdAt: date,
     };
     axios.post("http://localhost:7000/api/product/upload", body).then((res) => {
       if (res.data.success) {
@@ -90,7 +86,7 @@ function Upload() {
             <ItemNumber
               type="number"
               name="price"
-              onChange={(e) => onChangePrice(e)}
+              onChange={(e) => setPrice(e.target.value)}
               value={price}
             ></ItemNumber>
           </ItemWrapper>

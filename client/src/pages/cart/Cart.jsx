@@ -44,15 +44,6 @@ function Cart() {
     setDatas([...newDatas]);
   };
 
-  const onClickCheckboxAll = () => {
-    //모든 data의 checked를 바꿈.
-    const newDatas = datas.map((data) => ({
-      ...data,
-      checked: !data.checked,
-    }));
-    setDatas([...newDatas]);
-  };
-
   const onClickDelete = (id) => {
     //해당 data를 삭제함.
     const newDatas = datas.filter((data) => {
@@ -109,9 +100,7 @@ function Cart() {
           <thead>
             <tr>
               <td>전체 {datas.length}개</td>
-              <td>
-                <input type="checkbox" onClick={onClickCheckboxAll} />
-              </td>
+              <td>선택</td>
               <td>상품명</td>
               <td>사진</td>
               <td>가격</td>
@@ -138,7 +127,7 @@ function Cart() {
                     alt={data.title}
                   />
                 </td>
-                <td>{data.price}</td>
+                <td>{data.price.toLocaleString("ko-KR")} 원</td>
                 <td>
                   <input
                     type="number"
@@ -147,7 +136,9 @@ function Cart() {
                     onChange={(e) => onChangeQuantity(e, data._id)}
                   ></input>
                 </td>
-                <td>{data.price * data.quantity}</td>
+                <td>
+                  {(data.price * data.quantity).toLocaleString("ko-KR")} 원
+                </td>
                 <td>
                   <button onClick={() => onClickDelete(data._id)}>삭제</button>
                 </td>
@@ -170,11 +161,11 @@ function Cart() {
           <div className="cart__total--price">
             <div className="cart__total--price-select">
               <p>선택상품 금액</p>
-              <p>{totalPrice}</p>
+              <p>{totalPrice.toLocaleString("ko-KR")} 원</p>
             </div>
             <div className="cart__total--price-total">
               <p>총 결제금액</p>
-              <p>{totalPrice}</p>
+              <p>{totalPrice.toLocaleString("ko-KR")} 원</p>
             </div>
           </div>
           <div className="cart__total--button">
